@@ -102,7 +102,7 @@ stsaav <- function(x, what = c('Month', 'Week', 'Day')[1],
    t_mean <- t_sum/t_n   # matrix
    t_vmean <- rowMeans(t_mean, na.rm = TRUE)  # vector
    t_vsd <- apply(t_mean, 1, sd, na.rm = TRUE)  # vector
-   t_dep <- t_mean - t_rowmean  # matrix
+   t_dep <- t_mean - t_vmean  # matrix
    t_rdep <- t_dep/t_vsd # matrix
    
    ann_sum <- apply(t_sum, 2, sum, na.rm = TRUE) 
@@ -126,8 +126,8 @@ stsaav <- function(x, what = c('Month', 'Week', 'Day')[1],
       
       # time step stuff
       t_step = what,                #character Month, Week, Day
-      t_x = as.numeric(colnames(m)),#time steps along years
-      t_y = as.numeric(rownames(m)),#time steps along t
+      t_x = as.numeric(colnames(t_sum)),#time steps along years
+      t_y = as.numeric(rownames(t_sum)),#time steps along t
       t_sum = t_sum,                # matrix - sum of 'value'
       t_n = t_n,                    # matrix - counts
       t_mean = t_mean,              # matrix - means of 'value'

@@ -5,6 +5,8 @@
 \alias{stsaav-package}
 \title{Standard Time Series Analysis and Visualization.}
 \description{
-Standard Time Series Analysis and Visualization.
+Simplified analysis and display of standardizedtime series string modeled
+after examples found here
+\url{http://www.st.nmfs.noaa.gov/plankton/time-series-methods/index.html}
 }
 

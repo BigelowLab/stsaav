@@ -24,7 +24,7 @@ a stsaav class object which contains
    \item{ann_sum a vector of annual sums}
    \item{ann_mean a vector of annual means}
    \item{ann_dep a vector of annual deparature from the long term annual mean}
-   \item{ann_rdep a vector of annual ranked departure as sd intervals}
+   \item{ann_rdep a vector of annual standardized departures as sd intervals}
    \item{t_step character, the name of the time step (Month, Week, Day)}
    \item{t_x vector of years}
    \item{t_y vector of time steps}
@@ -33,7 +33,7 @@ a stsaav class object which contains
    \item{t_mean matrix of the mean observations of 'value'}
    \item{t_sd matrix of the standard deviation of observations of 'value'}
    \item{t_dep matrix of the departure from mean for each time step each year}
-   \item{t_rdep matrix of standardized (ranked?) departure from mean for each time step each year}
+   \item{t_rdep matrix of standardized departure from mean for each time step each year}
  }
 }
 \description{

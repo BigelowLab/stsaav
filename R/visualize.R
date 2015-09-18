@@ -1,6 +1,9 @@
 # visualize.R
 
-
+#' Plot a stsaav object
+#' @export
+#' @param x a stsaav object
+#' @param main character title, if null then not displayed
 plot.stsaav <- function(x, 
    main = NULL){
    
