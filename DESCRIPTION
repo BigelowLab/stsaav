@@ -1,0 +1,12 @@
+Package: stsaav
+Title: Standard Time Series Analysis and Visualization
+Version: 0.1
+Depends:
+    R (>= 3.0)
+Imports:
+    methods
+LazyData: true
+Maintainer: Ben Tupper <btupper@bigelow.org>
+Author: Ben Tupper <btupper@bigelow.org>, Todd O'Brien <Todd.OBrien@noaa.gov>
+URL: https://github.com/btupper/stsaav
+License: GPL (>= 2)
