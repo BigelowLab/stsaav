@@ -4,7 +4,8 @@ Version: 0.1
 Depends:
     R (>= 3.0)
 Imports:
-    methods
+    methods,
+    RColorBrewer
 LazyData: true
 Maintainer: Ben Tupper <btupper@bigelow.org>
 Author: Ben Tupper <btupper@bigelow.org>, Todd O'Brien <Todd.OBrien@noaa.gov>

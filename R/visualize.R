@@ -8,7 +8,6 @@ plot.stsaav <- function(x,
    main = NULL){
    
    stopifnot(inherits(x, 'stsaav'))
-   require(RColorBrewer)
    opar <- par(no.readonly = TRUE)
    on.exit(par(opar))
 
@@ -84,7 +83,7 @@ plot.stsaav <- function(x,
       
    # bottom right - sample density
    NC <- 9
-   bar <- brewer.pal(9, "YlOrRd")
+   bar <- RColorBrewer::brewer.pal(9, "YlOrRd")
    image(x$t_x, x$t_y, t(x$t_n), col = bar,
       xlab = labs[2], ylab = labs[1], 
       main = paste(paste0(x$t_step, "ly"),'Sampling Density'))
