@@ -1,5 +1,16 @@
 # analyze.R
 
+
+#' Determine if a stsaav object represents a continuous variable
+#' @export
+#' @param x a stsaav object
+#' @return logical, TRUE if numeric
+is_continuous <- function(x){
+   inherits(x$data[,x$xycol['vcol']], "numeric") ||
+      inherits(x$data[,x$xycol['vcol']], "integer") 
+}
+
+
 #' Converts Date values to week-of-the-year 
 #'  
 #'  Values may range from 1-53 unless coerce is TRUE (the default)
@@ -22,7 +33,7 @@ woy <- function(x=Sys.Date(), coerce = TRUE) {
 #'
 #' @export
 #' @param x a data.frame
-#' @param what the name of the time interval for analysis
+#' @param t_step the name of the time interval for analysis
 #' @param tcol character, the name of the time column
 #' @param vcol character the name of the value column
 #' @return a stsaav class object which contains
@@ -39,16 +50,17 @@ woy <- function(x=Sys.Date(), coerce = TRUE) {
 #'    \item{t_sum matrix of the sum of the 'value' by t_step and year}
 #'    \item{t_n matrix of the observation counts}
 #'    \item{t_mean matrix of the mean observations of 'value'}
+#'    \item{t_avg vector of the means of means of the value}
 #'    \item{t_sd matrix of the standard deviation of observations of 'value'}
 #'    \item{t_dep matrix of the departure from mean for each time step each year}
 #'    \item{t_rdep matrix of standardized departure from mean for each time step each year}
 #'  }
-stsaav <- function(x, what = c('Month', 'Week', 'Day')[1],
+stsaav <- function(x, t_step = c('Month', 'Week', 'Day')[1],
    tcol = 'Date', vcol = 'value'){
    
    stopifnot(tcol %in% colnames(x))
    stopifnot(vcol %in% colnames(x))
-   what <- match.arg(what, c('Month', 'Week', 'Day'))
+   t_step <- match.arg(t_step, c('Month', 'Week', 'Day'))
    
    Yjm <- do.call(rbind, strsplit(format(x[,tcol], "%Y-%j-%m"), "-"))
    colnames(Yjm) <- c("Year", "Day", "Month")
@@ -64,7 +76,7 @@ stsaav <- function(x, what = c('Month', 'Week', 'Day')[1],
    rn <- apply(r, 2, function(x) diff(x)+1 )
    
    
-   t_sum <- switch(what,
+   t_sum <- switch(t_step,
       'Day' = matrix(0, ncol = rn['Year'], nrow = rn['Day'],
          dimnames = list(
             'Day' = sprintf("%3.3i", seq(from = r[1,'Day'], to = r[2,'Day'])), 
@@ -88,9 +100,9 @@ stsaav <- function(x, what = c('Month', 'Week', 'Day')[1],
    # loop through summing and counting
    # not that we make sure that we only sum non-NA value
    ix <- which(!is.na(x[,vcol]))
-   for (i in seq_along(ix)){
-      t_sum[Yjmw[i,what], Yjmw[i,'Year']] <- t_sum[Yjmw[i,what], Yjmw[i,'Year']] + x[i, vcol]
-      t_n[Yjmw[i,what], Yjmw[i,'Year']] <- t_n[Yjmw[i,what], Yjmw[i,'Year']] + 1
+   for (i in ix){
+      t_sum[Yjmw[i,t_step], Yjmw[i,'Year']] <- t_sum[Yjmw[i,t_step], Yjmw[i,'Year']] + x[i, vcol]
+      t_n[Yjmw[i,t_step], Yjmw[i,'Year']] <- t_n[Yjmw[i,t_step], Yjmw[i,'Year']] + 1
    }
    
    # now find the zero-counts and change them to NA
@@ -125,13 +137,13 @@ stsaav <- function(x, what = c('Month', 'Week', 'Day')[1],
       ann_rdep = ann_rdep, # vector
       
       # time step stuff
-      t_step = what,                #character Month, Week, Day
+      t_step = t_step,                #character Month, Week, Day
       t_x = as.numeric(colnames(t_sum)),#time steps along years
       t_y = as.numeric(rownames(t_sum)),#time steps along t
       t_sum = t_sum,                # matrix - sum of 'value'
       t_n = t_n,                    # matrix - counts
       t_mean = t_mean,              # matrix - means of 'value'
-      t_mean = t_vmean,             # vector - mean values by t
+      t_avg = t_vmean,             # vector - mean values by t
       t_sd = t_vsd,                 # vector - sd values by t
       t_dep = t_dep,                # matrix - departures
       t_rdep = t_rdep               # matrix - depatures in sd

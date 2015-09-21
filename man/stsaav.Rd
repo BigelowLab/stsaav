@@ -4,13 +4,13 @@
 \alias{stsaav}
 \title{Construct a stsaav class object from a data frame.}
 \usage{
-stsaav(x, what = c("Month", "Week", "Day")[1], tcol = "Date",
+stsaav(x, t_step = c("Month", "Week", "Day")[1], tcol = "Date",
   vcol = "value")
 }
 \arguments{
 \item{x}{a data.frame}
 
-\item{what}{the name of the time interval for analysis}
+\item{t_step}{the name of the time interval for analysis}
 
 \item{tcol}{character, the name of the time column}
 
@@ -31,6 +31,7 @@ a stsaav class object which contains
    \item{t_sum matrix of the sum of the 'value' by t_step and year}
    \item{t_n matrix of the observation counts}
    \item{t_mean matrix of the mean observations of 'value'}
+   \item{t_avg vector of the means of means of the value}
    \item{t_sd matrix of the standard deviation of observations of 'value'}
    \item{t_dep matrix of the departure from mean for each time step each year}
    \item{t_rdep matrix of standardized departure from mean for each time step each year}
