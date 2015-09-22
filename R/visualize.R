@@ -22,7 +22,7 @@ plot_t_anom = function(x,
        "white",
        "palevioletred1", "palevioletred2", "palevioletred3", "palevioletred4",
        "red4")
-
+   par(las = 1)
    #cbar <- colorRampPalette(c( "#00007F","blue","#007FFF","cyan","#7FFF7F","yellow","#FF7F00","red","#7F0000"))
    cbar <- colorRampPalette(bar)
    image(x$t_x, x$t_y, t(x$t_dep), col = cbar(NC),
@@ -43,7 +43,7 @@ plot_t_anom = function(x,
       interpolate = FALSE)
    text(c(rx[1] + 0.05*w, rx[2] - 0.05*w), c(ry[2] + 0.1*h,ry[2] + 0.1*h), 
       labels = sprintf("%0.2f", rz), cex = 0.9, adj = c(0.5, 0.5))
-   par(xpd = opar[['xpd']])
+   par(xpd = opar[['xpd']], las = opar[['las']])
    
 } # plot_t_anom
 
@@ -66,7 +66,7 @@ plot_t_ranked_anom = function(x,
    tcol <- x$xycol[['tcol']]
    vcol <- x$xycol[['vcol']]
    labs  = names(dimnames(x$t_sum))
-   
+   par(las = 1)
    
    bar <- c(
        "lightskyblue4",  "lightskyblue3",  "lightskyblue2", "lightskyblue1",
@@ -100,7 +100,7 @@ plot_t_ranked_anom = function(x,
       interpolate = FALSE)
    text(c(rx[1] + 0.05*w, rx[2] - 0.05*w), c(ry[2] + 0.1*h,ry[2] + 0.1*h), 
       labels = sprintf("%0.0f sd", rz), cex = 0.9, adj = c(0.5, 0.5))
-   par(xpd = opar[['xpd']])
+   par(xpd = opar[['xpd']], las = opar[['las']])
 
    
 } # plot_t_anom
@@ -121,22 +121,20 @@ plot_t_cycle <- function(x,
    tcol <- x$xycol[['tcol']]
    vcol <- x$xycol[['vcol']]
    labs  = names(dimnames(x$t_sum))
-      
-   if (continuous){
    
+   par(las = 1)  
+   if (continuous){
+
       boxplot( as.numeric(x$data[,vcol]) ~ as.numeric(x$data[,x$t_step]),
          main = main, col = "green", 
          horizontal = TRUE,
-         xlab = x$t_step, ylab = vcol)
+         ylab = x$t_step, xlab = vcol)
    
    } else {
    
-      par(las = 1)
       z <- as.data.frame(t(x$t_mean))
       boxplot(z,
          horizontal = TRUE,
-         #names.arg = names(x$t_avg),
-         #xlim = c(0,1),
          col = 'green',
          ylab = x$t_step, xlab = vcol,
          main = main)
@@ -160,7 +158,7 @@ plot_a_anom <- function(x,
    tcol <- x$xycol[['tcol']]
    vcol <- x$xycol[['vcol']]
    labs  = names(dimnames(x$t_sum))
-   
+   par(las = 1)
       # bottom left annual anomalies
    aa <- x$ann_dep
    plot(as.numeric(names(aa)), aa, 
@@ -168,7 +166,7 @@ plot_a_anom <- function(x,
       col =  c('blue', 'red')[(aa > 0)+1],
       xlab = 'Year', ylab = vcol,
       main = main)  
-
+   par(las = opar[['las']])
 }
 
 #' Plot the sample density. 
@@ -183,6 +181,7 @@ plot_sample_density <- function(x,
    tcol <- x$xycol[['tcol']]
    vcol <- x$xycol[['vcol']]
    labs  = names(dimnames(x$t_sum))
+   par(las = 1)
       
       # bottom right - sample density
    NC <- 9
@@ -207,7 +206,7 @@ plot_sample_density <- function(x,
       interpolate = FALSE)
    text(c(rx[1] + 0.05*w, rx[2] - 0.05*w), c(ry[2] + 0.1*h,ry[2] + 0.1*h), 
       labels = sprintf("%0.0f", rz), cex = 0.9, adj = c(0.5, 0.5))
-   par(xpd = opar[['xpd']])
+   par(xpd = opar[['xpd']], las = opar[['las']])
 }
 
 
@@ -227,7 +226,7 @@ plot_t_series <- function(x,
    tcol <- x$xycol[['tcol']]
    vcol <- x$xycol[['vcol']]
    labs  = names(dimnames(x$t_sum))  
-   
+   par(las = 1)
    
    if (continuous){
    
@@ -270,7 +269,7 @@ plot_t_series <- function(x,
          main = main,
          cex = 0.6)
       abline(lm(yy ~ xx),col="red",lty="dashed",lwd=2)   
-
+      par(las = opar[['las']])
    }
 
    
