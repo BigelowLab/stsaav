@@ -4,7 +4,8 @@
 #' 
 #' @export
 #' @param x a stsaav object
-#' @param label_fmt character the formating specification for the color bar
+#' @param label_format character the formating specification for the color bar
+#' @param main the title
 plot_t_anom = function(x,
    label_format = "%0.2f",
    main = pretty_main(x$t_step, what = 'Anomalies')){
@@ -32,22 +33,22 @@ plot_t_anom = function(x,
          lwd = if(x$t_step == 'Month') 2 else 1, 
          lty = 'solid')
    box()
-   bar <- matrix(cbar(NC), ncol = NC, nrow = 2, byrow = TRUE)
-   rx <- range(x$t_x)
-   ry <- range(x$t_y)
-   rz <- range(x$t_dep, na.rm = TRUE)
-   w <- diff(rx)
-   h <- diff(ry)
-   par(xpd = NA)
-   rasterImage(bar, rx[1] + 0.1*w, ry[2] + 0.07*h, rx[2] - 0.1*w, ry[2] + 0.12*h,
-      interpolate = FALSE)
-   text(c(rx[1] + 0.05*w, rx[2] - 0.05*w), c(ry[2] + 0.1*h,ry[2] + 0.1*h), 
-      labels = sprintf("%0.2f", rz), cex = 0.9, adj = c(0.5, 0.5))
-   par(xpd = opar[['xpd']], las = opar[['las']])
    
+   par(xpd = NA)
+   rz <- range(x$t_dep, na.rm = TRUE)
+   bar <- matrix(cbar(NC), ncol = NC, nrow = 2, byrow = TRUE)
+   u <- draw_topbar(bar)
+   text( x = c(u['l'] - u['w']*0.05, u['r'] + u['w']*0.05),
+         y = c(u['cy'], u['cy']),
+         labels = sprintf(label_format, rz), 
+         cex = 0.9, adj = c(0.5, 0.5))
+
+   par(xpd = opar[['xpd']], las = opar[['las']])
+   invisible()
 } # plot_t_anom
 
 
+   
 
 #' Plot the seasonal anomaly
 #' 
@@ -55,7 +56,7 @@ plot_t_anom = function(x,
 #' @param x a stsaav object
 #' @param n_sd numeric vector, number of standard deviation steps above/below
 #'    by default we use -3 to +3 
-#' @param label_fmt character the formating specification for the color bar
+#' @param label_format character the formating specification for the color bar
 plot_t_ranked_anom = function(x,
    n_sd = c(-3, 3),
    label_format = "%0.0f",
@@ -89,20 +90,18 @@ plot_t_ranked_anom = function(x,
          lty = 'solid')   
    box()
    par(xpd = NA)
-   bar <- matrix(bar, ncol = NC, nrow = 2, byrow = TRUE)
-   rx <- range(x$t_x)
-   ry <- range(x$t_y)
    rz <- range(sd_steps)
-   w <- diff(rx)
-   h <- diff(ry)
-   par(xpd = NA)
-   rasterImage(bar, rx[1] + 0.1*w, ry[2] + 0.07*h, rx[2] - 0.1*w, ry[2] + 0.12*h,
-      interpolate = FALSE)
-   text(c(rx[1] + 0.05*w, rx[2] - 0.05*w), c(ry[2] + 0.1*h,ry[2] + 0.1*h), 
-      labels = sprintf("%0.0f sd", rz), cex = 0.9, adj = c(0.5, 0.5))
+   bar <- matrix(bar, ncol = NC, nrow = 2, byrow = TRUE)
+   u <- draw_topbar(bar)
+   text( x = c(u['l'] - u['w']*0.05, u['r'] + u['w']*0.05),
+         y = c(u['cy'], u['cy']),
+         labels = sprintf(paste(label_format, "sd"), rz), 
+         cex = 0.9, adj = c(0.5, 0.5))   
+   
+
    par(xpd = opar[['xpd']], las = opar[['las']])
 
-   
+   invisible()   
 } # plot_t_anom
 
 
@@ -141,7 +140,7 @@ plot_t_cycle <- function(x,
    }
    
    par(las = opar[['las']])
-
+   invisible()
 } # plot_t_cycle
 
 
@@ -167,13 +166,16 @@ plot_a_anom <- function(x,
       xlab = 'Year', ylab = vcol,
       main = main)  
    par(las = opar[['las']])
+   invisible()
 }
 
 #' Plot the sample density. 
 #' @export
 #' @param x a stsaav object
+#' @param label_format character the formating specification for the color bar
 #' @param main the title
 plot_sample_density <- function(x,
+   label_format = "%0.0f",
    main = pretty_main(x$t_step, what='Sample Density') ){
 
    stopifnot(inherits(x, 'stsaav'))
@@ -195,18 +197,17 @@ plot_sample_density <- function(x,
          lty = 'solid')   
    box()
    par(xpd = NA)
-   bar <- matrix(bar, ncol = NC, nrow = 2, byrow = TRUE)
-   rx <- range(x$t_x)
-   ry <- range(x$t_y)
    rz <- range(x$t_n, na.rm = TRUE)
-   w <- diff(rx)
-   h <- diff(ry)
-   par(xpd = NA)
-   rasterImage(bar, rx[1] + 0.1*w, ry[2] + 0.07*h, rx[2] - 0.1*w, ry[2] + 0.12*h,
-      interpolate = FALSE)
-   text(c(rx[1] + 0.05*w, rx[2] - 0.05*w), c(ry[2] + 0.1*h,ry[2] + 0.1*h), 
-      labels = sprintf("%0.0f", rz), cex = 0.9, adj = c(0.5, 0.5))
+   bar <- matrix(bar, ncol = NC, nrow = 2, byrow = TRUE)
+   u <- draw_topbar(bar)
+   text( x = c(u['l'] - u['w']*0.05, u['r'] + u['w']*0.05),
+         y = c(u['cy'], u['cy']),
+         labels = sprintf(label_format, rz), 
+         cex = 0.9, adj = c(0.5, 0.5))
+   
+
    par(xpd = opar[['xpd']], las = opar[['las']])
+   invisible()
 }
 
 
@@ -272,9 +273,44 @@ plot_t_series <- function(x,
       par(las = opar[['las']])
    }
 
-   
+   invisible()   
 } # plot_t_series
 
+
+#' Draw the color bar across the top of the figure underneath the 
+#' title
+#'
+#' @param bar a color matrix
+#' @param fx numeric vector of set backs [left, right] for the ends of the 
+#'    color bar
+#' @param dy numeric controls the space between the bottom of the bar and the top
+#'    plot as a fraction of string height
+#' @param interpolate logical, if TRUE interpolate the color bar otherwise sample
+#'     - see \code{rasterImage} for details
+#' @return a vector of [left, right, bottom, top, width, height, cx, cy] bar coords
+draw_topbar <- function(bar, fx = c(0.1, 0.1), dy = 0.5, interpolate = FALSE){
+
+   u <- par('usr')
+   h <- strheight("A", cex = 1.2)
+   dy <- dy * h
+   w <- u[2] - u[1]
+   left <- u[1] + (w * fx[1])
+   right <- u[2] - (w * fx[2])
+   x <- c( 
+      l = left,
+      r = right,
+      b = u[4] + dy,
+      t = u[4] + dy + h,
+      w = right - left,
+      h = h,
+      cx = (right - left)/2,
+      cy = u[4] + dy + h/2 )
+      
+   rasterImage(bar, x['l'], x['b'], x['r'], x['t'],
+      interpolate = interpolate)
+
+   x
+} # draw_topbar
 
 
 #' Generate a pretty title.

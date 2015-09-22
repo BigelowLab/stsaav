@@ -4,10 +4,13 @@
 \alias{plot_sample_density}
 \title{Plot the sample density.}
 \usage{
-plot_sample_density(x, main = pretty_main(x$t_step, what = "Sample Density"))
+plot_sample_density(x, label_format = "\%0.0f", main = pretty_main(x$t_step,
+  what = "Sample Density"))
 }
 \arguments{
 \item{x}{a stsaav object}
+
+\item{label_format}{character the formating specification for the color bar}
 
 \item{main}{the title}
 }

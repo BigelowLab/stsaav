@@ -10,7 +10,9 @@ plot_t_anom(x, label_format = "\%0.2f", main = pretty_main(x$t_step, what =
 \arguments{
 \item{x}{a stsaav object}
 
-\item{label_fmt}{character the formating specification for the color bar}
+\item{label_format}{character the formating specification for the color bar}
+
+\item{main}{the title}
 }
 \description{
 Plot the seasonal anomaly

@@ -13,7 +13,7 @@ plot_t_ranked_anom(x, n_sd = c(-3, 3), label_format = "\%0.0f",
 \item{n_sd}{numeric vector, number of standard deviation steps above/below
 by default we use -3 to +3}
 
-\item{label_fmt}{character the formating specification for the color bar}
+\item{label_format}{character the formating specification for the color bar}
 }
 \description{
 Plot the seasonal anomaly
