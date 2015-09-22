@@ -49,3 +49,5 @@ str(airport_wx)
 x <- stsaav(airport_wx, tcol = 'Date', vcol = 'Max.TemperatureF')
 plot(x, main = 'Maximum Daily Temp in Narsarsuaq, Greenland')
 ```
+
+![example image](https://github.com/btupper/stsaav/blob/master/inst/images/Narsarsuaq.png)
