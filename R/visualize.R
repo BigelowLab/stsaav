@@ -4,9 +4,11 @@
 #' 
 #' @export
 #' @param x a stsaav object
+#' @param symmetric logical, if TRUE then force the coloring to be symmetric
 #' @param label_format character the formating specification for the color bar
 #' @param main the title
 plot_t_anom = function(x,
+   symmetric = TRUE,
    label_format = "%0.2f",
    main = pretty_main(x$t_step, what = 'Anomalies')){
    
@@ -16,17 +18,22 @@ plot_t_anom = function(x,
    vcol <- x$xycol[['vcol']]
    labs  = names(dimnames(x$t_sum))
    
-   NC <- 10
+
    bar <- c(
        "royalblue4",
        "lightskyblue4",  "lightskyblue3",  "lightskyblue2", "lightskyblue1",
-       "white",
+       #"white",
        "palevioletred1", "palevioletred2", "palevioletred3", "palevioletred4",
        "red4")
+   NC <- length(bar)
+   #NC <- 10
    par(las = 1)
    #cbar <- colorRampPalette(c( "#00007F","blue","#007FFF","cyan","#7FFF7F","yellow","#FF7F00","red","#7F0000"))
    cbar <- colorRampPalette(bar)
-   image(x$t_x, x$t_y, t(x$t_dep), col = cbar(NC),
+   rz <- range(x$t_dep, na.rm = TRUE)
+   if (symmetric) rz <- max(abs(rz)) * c(-1,1)
+            
+   image(x$t_x, x$t_y, t(x$t_dep), zlim = rz, col = cbar(NC),
       xlab = labs[2], ylab = labs[1], main = main)
    if (x$t_step != 'Day')
       grid(nx = length(x$t_x), ny = length(x$t_y), col = 'white', 
@@ -35,7 +42,7 @@ plot_t_anom = function(x,
    box()
    
    par(xpd = NA)
-   rz <- range(x$t_dep, na.rm = TRUE)
+   #rz <- range(x$t_dep, na.rm = TRUE)
    bar <- matrix(cbar(NC), ncol = NC, nrow = 2, byrow = TRUE)
    u <- draw_topbar(bar)
    text( x = c(u['l'] - u['w']*0.05, u['r'] + u['w']*0.05),
@@ -150,7 +157,7 @@ plot_t_cycle <- function(x,
 #' @param x a stsaav object
 #' @param main the title
 plot_a_anom <- function(x,
-   main = pretty_main(x$t_step, what = 'Anomalies')){
+   main =  'Annual Anomalies'){
 
    stopifnot(inherits(x, 'stsaav'))
    opar <- par(no.readonly = TRUE)

@@ -4,11 +4,13 @@
 \alias{plot_t_anom}
 \title{Plot the seasonal anomaly}
 \usage{
-plot_t_anom(x, label_format = "\%0.2f", main = pretty_main(x$t_step, what =
-  "Anomalies"))
+plot_t_anom(x, symmetric = TRUE, label_format = "\%0.2f",
+  main = pretty_main(x$t_step, what = "Anomalies"))
 }
 \arguments{
 \item{x}{a stsaav object}
+
+\item{symmetric}{logical, if TRUE then force the coloring to be symmetric}
 
 \item{label_format}{character the formating specification for the color bar}
 

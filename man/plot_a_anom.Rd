@@ -5,7 +5,7 @@
 \title{Plot the seasonal cycle.  Continuous variables are plotted as boxplots while
 binary variables are plotted as sums.}
 \usage{
-plot_a_anom(x, main = pretty_main(x$t_step, what = "Anomalies"))
+plot_a_anom(x, main = "Annual Anomalies")
 }
 \arguments{
 \item{x}{a stsaav object}
