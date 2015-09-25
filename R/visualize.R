@@ -116,7 +116,7 @@ plot_t_ranked_anom = function(x,
 #' binary variables are plotted as sums.
 #' @export
 #' @param x a stsaav object
-#' @param continuous logical TRUE unless dealing with logical inputs. 
+#' @param continuous logical TRUE to treat vcol as a continuous variable 
 #' @param main character, by default 'Season Cycle'
 plot_t_cycle <- function(x, 
    continuous = is_continuous(x),
@@ -346,8 +346,10 @@ pretty_main <- function(x,
 #' Plot a stsaav object
 #' @export
 #' @param x a stsaav object
+#' @param continuous logical TRUE to treat vcol as a continuous variable
 #' @param main character title, if null then not displayed
 plot.stsaav <- function(x, 
+   continuous = is_continuous(x), 
    main = NULL){
    
    stopifnot(inherits(x, 'stsaav'))
@@ -360,9 +362,9 @@ plot.stsaav <- function(x,
    labs  = names(dimnames(x$t_sum))
 
    plot_t_anom(x)
-   plot_t_cycle(x)
+   plot_t_cycle(x, continuous = continuous)
    plot_t_ranked_anom(x)
-   plot_t_series(x)
+   plot_t_series(x, continuous = continuous)
    plot_a_anom(x)
    plot_sample_density(x)
 
