@@ -13,10 +13,9 @@ is_continuous <- function(x){
 
 #' Converts Date values to week-of-the-year 
 #'  
-#'  Values may range from 1-53 unless coerce is TRUE (the default)
-#'  in which case will coerce the oddball end-of-year days to belong
-#'  to the 52 week
-#'  NOTE: does not use %U or %W format intentionally
+#' Values may range from 1-53 unless coerce is TRUE (the default)
+#' in which case will coerce the oddball end-of-year days to belong
+#' to the 52 week
 #'
 #' @export
 #' @param x The date values as POSIXct or Date class 
@@ -62,13 +61,13 @@ stsaav <- function(x, t_step = c('Month', 'Week', 'Day')[1],
    stopifnot(vcol %in% colnames(x))
    t_step <- match.arg(t_step, c('Month', 'Week', 'Day'))
    
-   Yjm <- do.call(rbind, strsplit(format(x[,tcol], "%Y-%j-%m"), "-"))
+   Yjm <- do.call(rbind, strsplit(format(x[[tcol]], "%Y-%j-%m"), "-"))
    colnames(Yjm) <- c("Year", "Day", "Month")
    x$Year <- sprintf("%4.4i", as.numeric(Yjm[,1]))
    x$Day <- sprintf("%3.3i", as.numeric(Yjm[,2]))
    x$Month <- sprintf("%2.2i", as.numeric(Yjm[,3]))
-   x$Week <- sprintf("%2.2i", woy(as.POSIXct(x[,tcol])))
-   Yjmw <- cbind(Yjm,'Week' = x[,'Week']) 
+   x$Week <- sprintf("%2.2i", woy(as.POSIXct(x[[tcol]])))
+   Yjmw <- cbind(Yjm,'Week' = x[['Week']]) 
    Yjmwn <- matrix(as.numeric(Yjmw), ncol = ncol(Yjmw))
    colnames(Yjmwn) <- colnames(Yjmw)
    
@@ -99,9 +98,9 @@ stsaav <- function(x, t_step = c('Month', 'Week', 'Day')[1],
    
    # loop through summing and counting
    # not that we make sure that we only sum non-NA value
-   ix <- which(!is.na(x[,vcol]))
+   ix <- which(!is.na(x[[vcol]]))
    for (i in ix){
-      t_sum[Yjmw[i,t_step], Yjmw[i,'Year']] <- t_sum[Yjmw[i,t_step], Yjmw[i,'Year']] + x[i, vcol]
+      t_sum[Yjmw[i,t_step], Yjmw[i,'Year']] <- t_sum[Yjmw[i,t_step], Yjmw[i,'Year']] + x[[vcol]][i]
       t_n[Yjmw[i,t_step], Yjmw[i,'Year']] <- t_n[Yjmw[i,t_step], Yjmw[i,'Year']] + 1
    }
    

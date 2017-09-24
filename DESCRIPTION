@@ -11,3 +11,4 @@ Maintainer: Ben Tupper <btupper@bigelow.org>
 Author: Ben Tupper <btupper@bigelow.org>, Todd O'Brien <Todd.OBrien@noaa.gov>
 URL: https://github.com/btupper/stsaav
 License: GPL (>= 2)
+RoxygenNote: 6.0.1
